@@ -1,6 +1,9 @@
 package make
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Suite represents the build suite of a product.
 type Suite struct {
@@ -49,6 +52,28 @@ func (s *Suite) RegisterTargets(targets ...NamedTarget) {
 // nil if no such Target exists.
 func (s *Suite) Lookup(targetName string) Target {
 	return s.registeredTargets[targetName]
+}
+
+// LookupPrefix returns all registered Targets starting with the
+// given prefix.
+func (s *Suite) LookupPrefix(namePrefix string) []Target {
+	ret := make([]Target, 0)
+	for name, target := range s.registeredTargets {
+		if strings.HasPrefix(name, namePrefix) {
+			ret = append(ret, target)
+		}
+	}
+	return ret
+}
+
+// LookupBuildTargets returns all registerd build targets.
+func (s *Suite) LookupBuildTargets() []Target {
+	return s.LookupPrefix(BuildTargetNamePrefix)
+}
+
+// LookupCleanTargets returns all registerd clean targets.
+func (s *Suite) LookupCleanTargets() []Target {
+	return s.LookupPrefix(CleanTargetNamePrefix)
 }
 
 type targetNotFoundError struct {

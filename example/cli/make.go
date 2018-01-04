@@ -1,17 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/targodan/go-make"
 )
 
 func main() {
-	var err error
-
 	all := make.PlatformSet{
+		make.LinuxX386,
 		make.LinuxAmd64,
+		make.WindowsX386,
 		make.WindowsAmd64,
 	}
 	suite := make.NewBuildSuite(all)
@@ -22,9 +19,11 @@ func main() {
 		VersionVariableName: "main.version",
 	}, all)
 
-	err = suite.Execute(make.Parallelize(make.ConvertBuildTargetSlice(buildTargets)...))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(-2)
+	for _, target := range buildTargets {
+		suite.RegisterTarget(target)
+		suite.RegisterTarget(make.CleanTargetsFromOutputTargets(target)[0])
 	}
+
+	app := make.CLIApp(suite)
+	app.RunAndExitOnError()
 }

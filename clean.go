@@ -14,8 +14,8 @@ type CleanTarget struct {
 	Platform *Platform
 }
 
-// MakeCleanTargets creates clean targets from NamedOutputTargets.
-func MakeCleanTargets(targets ...OutputTarget) []*CleanTarget {
+// CleanTargetsFromOutputTargets creates clean targets from NamedOutputTargets.
+func CleanTargetsFromOutputTargets(targets ...OutputTarget) []*CleanTarget {
 	cleans := make([]*CleanTarget, len(targets))
 
 	for i, t := range targets {

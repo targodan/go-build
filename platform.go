@@ -2,6 +2,7 @@ package make
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 )
 
@@ -34,6 +35,11 @@ const (
 // ParseOS checks the text and returns an equivalent OS if possible.
 func ParseOS(text string) (os OS, err error) {
 	text = strings.ToLower(text)
+
+	if text == "native" {
+		text = runtime.GOOS
+	}
+
 	for _, o := range []OS{Android, Darwin, Dragonfly, FreeBSD, Linux, NetBSD, OpenBSD, Plan9, Solaris, Windows} {
 		if string(o) == text {
 			os = o
@@ -79,6 +85,11 @@ const (
 // ParseArch checks the text and returns an equivalent Arch if possible.
 func ParseArch(text string) (arch Arch, err error) {
 	text = strings.ToLower(text)
+
+	if text == "native" {
+		text = runtime.GOARCH
+	}
+
 	for _, a := range []Arch{Arm, Arm64, X386, Amd64, Ppc64, Ppc64LE, Mips, MipsLE, Mips64, Mips64LE} {
 		if string(a) == text {
 			arch = a
