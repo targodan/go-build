@@ -1,4 +1,4 @@
-package build
+package make
 
 // MultiError is an error consisting of multiple errors.
 type MultiError struct {

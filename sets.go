@@ -1,4 +1,4 @@
-package build
+package make
 
 // PlatformSet is a set of Platforms.
 type PlatformSet []*Platform

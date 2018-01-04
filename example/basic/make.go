@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/targodan/go-build"
+	"github.com/targodan/go-make"
 )
 
 type V struct{}
@@ -16,19 +16,19 @@ func (v V) String() string {
 func main() {
 	var err error
 
-	all := build.PlatformSet{
-		build.LinuxAmd64,
-		build.WindowsAmd64,
+	all := make.PlatformSet{
+		make.LinuxAmd64,
+		make.WindowsAmd64,
 	}
-	suite := build.NewBuildSuite(all)
+	suite := make.NewBuildSuite(all)
 
-	buildTargets := build.MultiPlatformBuild(&build.BuildTarget{
-		ExecutableName:      build.DefaultNameTemplate("test"),
-		Version:             build.VersionFromGit("."),
+	buildTargets := make.MultiPlatformBuild(&make.BuildTarget{
+		ExecutableName:      make.DefaultNameTemplate("test"),
+		Version:             make.VersionFromGit("."),
 		VersionVariableName: "main.version",
 	}, all)
 
-	err = suite.Execute(build.Parallelize(build.ConvertBuildTargetSlice(buildTargets)...))
+	err = suite.Execute(make.Parallelize(make.ConvertBuildTargetSlice(buildTargets)...))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(-2)

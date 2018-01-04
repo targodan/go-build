@@ -1,4 +1,4 @@
-package build
+package make
 
 // ParallelTargets contains Targets that will be
 // executed in paralell.

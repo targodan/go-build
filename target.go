@@ -1,4 +1,4 @@
-package build
+package make
 
 // Target represents a target that can be executed.
 // Targets can be whatever you want, like build-, clean-
